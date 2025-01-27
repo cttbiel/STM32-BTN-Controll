@@ -123,12 +123,22 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
+  while (1)// Here's the interesting part, this while is changing the status between 0 ( which is off) and 1 ( on) 
   {
-	  HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
-	  HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_14);
-	  HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
-	  HAL_Delay(500);
+	  if (HAL_GPIO_ReadPin(BT1_GPIO_Port,BT1_Pin) == 0){
+		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, 1);
+		  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_14, 0);
+		  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_0, 0);
+
+	  } else {
+		  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_7, 0);
+		  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_14, 1);
+		  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_0, 1);
+	  } 
+	  //HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
+	  //HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_14);
+	 // HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
+	  //HAL_Delay(500);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -337,11 +347,11 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(USB_PowerSwitchOn_GPIO_Port, USB_PowerSwitchOn_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : PC13 */
-  GPIO_InitStruct.Pin = GPIO_PIN_13;
+  /*Configure GPIO pin : BT1_Pin */
+  GPIO_InitStruct.Pin = BT1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  HAL_GPIO_Init(BT1_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PB0 LD3_Pin LD2_Pin */
   GPIO_InitStruct.Pin = GPIO_PIN_0|LD3_Pin|LD2_Pin;
